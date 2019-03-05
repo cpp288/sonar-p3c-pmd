@@ -1,100 +1,12 @@
-<p>Look for qualified this usages in the same class.</p>
+<p>线程资源必须通过线程池提供，不允许在应用中自行显式创建线程。</p>
+<p>说明：使用线程池的好处是减少在创建和销毁线程上所花的时间以及系统资源的开销，解决资源不足的问题。如果不使用线程池，有可能造成系统创建大量同类线程而导致消耗完内存或者“过度切换”的问题。</p>
 <p>Examples:</p>
 <pre>
-package com.alibaba.idea.pmd.test.concurrent;
+ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("demo-pool-%d").build();
+ExecutorService singleThreadPool = new ThreadPoolExecutor(1, 1,
+    0L, TimeUnit.MILLISECONDS,
+    new LinkedBlockingQueue&lt;Runnable&gt;(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
 
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-/**
- * @author caikang
- * @date 2016/11/15
- */
-public class ThreadCreateTest {
-     {
-        Runtime.getRuntime().addShutdownHook(
-new Thread()
-);
-    }
-    private ThreadFactory threadFactory = r -> {
-        Thread thread1 = new Thread(r);
-        thread1.setName("kdsljf");
-        return thread1;
-    };
-
-    private ThreadFactory threadFactory1 = new ThreadFactory() {
-        @Override
-        public Thread newThread(Runnable r) {
-            Thread thread = new Thread();
-            thread.setName("xxx");
-            return thread;
-        }
-    };
-
-    private ThreadFactory threadFactory2 = new ThreadFactory() {
-        @Override
-        public Thread newThread(Runnable r) {
-            return new ThreadFactory() {
-                @Override
-                public Thread newThread(Runnable r) {
-                    Thread thread = new Thread();
-                    return thread;
-                }
-            }.newThread(r);
-        }
-    };
-
-    public void testNewThread(){
-        new ThreadFactory(){
-
-            @Override
-            public Thread newThread(Runnable r) {
-                return new Thread();
-            }
-        }.newThread(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });
-    }
-
-    public void testParamter(){
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10, 10, 100, TimeUnit.MILLISECONDS, new SynchronousQueue<Runnable>(),
-                r -> {
-                    Thread thread1 = new Thread(r);
-                    thread1.setName("xxx");
-                    return thread1;
-                });
-        new ThreadPoolExecutor(10, 10, 100, TimeUnit.MILLISECONDS, new SynchronousQueue<Runnable>(),
-                r -> {
-                    Thread thread1 = new Thread(r);
-                    thread1.setName("xxx");
-                    return thread1;
-                });
-        new ThreadPoolExecutor(10, 10, 100, TimeUnit.MILLISECONDS, new SynchronousQueue<Runnable>(),
-                new ThreadFactory() {
-                    @Override
-                    public Thread newThread(Runnable r) {
-                        return new Thread();
-                    }
-                });
-    }
-
-    class MyThreadFactory implements ThreadFactory {
-        /**
-         * Constructs a new {@code Thread}.  Implementations may also initialize
-         * priority, name, daemon status, {@code ThreadGroup}, etc.
-         *
-         * @param r a runnable to be executed by new thread instance
-         * @return constructed thread, or {@code null} if the request to create a thread is rejected
-         */
-        @Override
-        public Thread newThread(Runnable r) {
-            return new Thread();
-        }
-    }
-}
+singleThreadPool.execute(()-> System.out.println(Thread.currentThread().getName()));
+singleThreadPool.shutdown();
 </pre>

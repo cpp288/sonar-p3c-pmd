@@ -1,8 +1,8 @@
-<p>Look for qualified this usages in the same class.</p>
+<p>不要在foreach循环里进行元素的remove/add操作，remove元素请使用Iterator方式。</p>
 <p>Examples:</p>
 <pre>
     Negative example:
-    List<String> originList = new ArrayList<String>();
+    List&lt;String&gt; originList = new ArrayList&lt;String&gt;();
     originList.add("22");
     for (String item : originList) {
       //warn
@@ -10,7 +10,7 @@
     }
 
     Positive example:
-    Iterator<Integer> it=b.iterator();
+    Iterator&lt;Integer&gt; it=b.iterator();
     while(it.hasNext()){
     Integer temp =  it.next();
         if (delCondition) {

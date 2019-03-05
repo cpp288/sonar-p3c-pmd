@@ -1,4 +1,4 @@
-<p>Look for qualified this usages in the same class.</p>
+<p>避免Random实例被多线程使用，虽然共享该实例是线程安全的，但会因竞争同一seed 导致的性能下降。说明：Random实例包括java.util.Random 的实例或者 Math.random()的方式。</p>
 <p>Examples:</p>
 <pre>
     Positive example 1：
@@ -13,10 +13,7 @@
             long t = random.nextLong();
         }
     }
-        ]]>
-    </example>
-    <example>
-            <![CDATA[
+
     Positive example 2：
     /**
      * @author caikang

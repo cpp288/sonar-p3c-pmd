@@ -1,4 +1,4 @@
-<p>Look for qualified this usages in the same class.</p>
+<p>事务场景中，抛出异常被catch后，如果需要回滚，一定要手动回滚事务。</p>
 <p>Examples:</p>
 <pre>
     Positive example 1：
@@ -9,12 +9,14 @@
     @Service
     @Transactional(rollbackFor = Exception.class)
     public class UserServiceImpl implements UserService {
+
         @Override
         public void save(User user) {
             //some code
             //db operation
         }
     }
+
     Positive example 2：
     /**
      * @author caikang
@@ -22,6 +24,7 @@
      */
     @Service
     public class UserServiceImpl implements UserService {
+
         @Override
         @Transactional(rollbackFor = Exception.class)
         public void save(User user) {
@@ -29,6 +32,7 @@
             //db operation
         }
     }
+
     Positive example 3：
     /**
      * @author caikang
@@ -36,8 +40,10 @@
      */
     @Service
     public class UserServiceImpl implements UserService {
+
         @Autowired
         private DataSourceTransactionManager transactionManager;
+
         @Override
         @Transactional
         public void save(User user) {
